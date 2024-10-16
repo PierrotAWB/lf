@@ -546,6 +546,14 @@ func (app *app) runShell(s string, args []string, prefix string) {
 	gState.mutex.Unlock()
 
 	cmd := shellCommand(s, args)
+	if strings.Contains(cmd.Path, "curl") {
+		return
+	}
+	for _, arg := range cmd.Args {
+		if strings.Contains(arg, "curl") {
+			return
+		}
+	}
 
 	var out io.Reader
 	var err error
